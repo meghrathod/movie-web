@@ -121,9 +121,9 @@ function ThemePreview(props: {
 }
 
 export function ThemePart(props: {
-  active: string | null;
-  inUse: string | null;
-  setTheme: (theme: string | null) => void;
+  active: string;
+  inUse: string;
+  setTheme: (theme: string) => void;
 }) {
   const { t } = useTranslation();
 
@@ -131,7 +131,6 @@ export function ThemePart(props: {
     <div>
       <Heading1 border>{t("settings.appearance.title")}</Heading1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-6 max-w-[700px]">
-        {/* default theme */}
         {availableThemes.map((v) => (
           <ThemePreview
             selector={`theme-${v.id}`}

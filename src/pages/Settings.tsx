@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAsyncFn } from "react-use";
 
@@ -101,12 +101,10 @@ export function AccountSettings(props: {
 
 export function SettingsPage() {
   const { t } = useTranslation();
-  const activeTheme = useThemeStore((s) => s.theme) ?? "default";
+  const activeTheme = useThemeStore((s) => s.theme);
   const setTheme = useThemeStore((s) => s.setTheme);
-  const previewTheme = usePreviewThemeStore((s) => s.previewTheme) ?? "default";
+  const previewTheme = usePreviewThemeStore((s) => s.previewTheme);
   const setPreviewTheme = usePreviewThemeStore((s) => s.setPreviewTheme);
-  const activeThemeRef = useRef(activeTheme);
-  activeThemeRef.current = activeTheme;
 
   const appLanguage = useLanguageStore((s) => s.language);
   const setAppLanguage = useLanguageStore((s) => s.setLanguage);
@@ -147,19 +145,21 @@ export function SettingsPage() {
     enableThumbnails,
   );
 
-  useEffect(
-    () => () => {
-      setPreviewTheme(
-        activeThemeRef.current === "default" ? null : activeThemeRef.current,
-      );
-    },
-    [setPreviewTheme],
-  );
+  useEffect(() => {
+    setPreviewTheme(activeTheme ?? "default");
+  }, [setPreviewTheme, activeTheme]);
+
+  useEffect(() => {
+    // Clear preview theme on unmount
+    return () => {
+      setPreviewTheme(null);
+    };
+  }, [setPreviewTheme]);
 
   const setThemeWithPreview = useCallback(
-    (v: string | null) => {
-      state.theme.set(v === "default" ? null : v);
-      setPreviewTheme(v);
+    (theme: string) => {
+      state.theme.set(theme === "default" ? null : theme);
+      setPreviewTheme(theme);
     },
     [state.theme, setPreviewTheme],
   );
@@ -263,8 +263,8 @@ export function SettingsPage() {
         </div>
         <div id="settings-appearance" className="mt-48">
           <ThemePart
-            active={previewTheme}
-            inUse={activeTheme}
+            active={previewTheme ?? "default"}
+            inUse={activeTheme ?? "default"}
             setTheme={setThemeWithPreview}
           />
         </div>
