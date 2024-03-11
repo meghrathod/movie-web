@@ -19,6 +19,8 @@ import { DmcaPage, shouldHaveDmcaPage } from "@/pages/Dmca";
 import { NotFoundPage } from "@/pages/errors/NotFoundPage";
 import { HomePage } from "@/pages/HomePage";
 import { LoginPage } from "@/pages/Login";
+import { MigrationPage } from "@/pages/migration/Migration";
+import { MigrationDirectPage } from "@/pages/migration/MigrationDirect";
 import { OnboardingPage } from "@/pages/onboarding/Onboarding";
 import { OnboardingExtensionPage } from "@/pages/onboarding/OnboardingExtension";
 import { OnboardingProxyPage } from "@/pages/onboarding/OnboardingProxy";
@@ -128,6 +130,9 @@ function App() {
           element={<OnboardingExtensionPage />}
         />
         <Route path="/onboarding/proxy" element={<OnboardingProxyPage />} />
+
+        <Route path="/migration" element={<MigrationPage />} />
+        <Route path="/migration/direct" element={<MigrationDirectPage />} />
 
         {shouldHaveDmcaPage() ? (
           <Route path="/dmca" element={<DmcaPage />} />
