@@ -26,6 +26,7 @@ export interface BookmarkStore {
   bookmarks: Record<string, BookmarkMediaItem>;
   updateQueue: BookmarkUpdateItem[];
   addBookmark(meta: PlayerMeta): void;
+  setBookmark(id: string, item: BookmarkMediaItem): void;
   removeBookmark(id: string): void;
   replaceBookmarks(items: Record<string, BookmarkMediaItem>): void;
   clear(): void;
@@ -92,6 +93,11 @@ export const useBookmarkStore = create(
       removeUpdateItem(id: string) {
         set((s) => {
           s.updateQueue = [...s.updateQueue.filter((v) => v.id !== id)];
+        });
+      },
+      setBookmark(id, item) {
+        set((s) => {
+          s.bookmarks[id] = item;
         });
       },
     })),

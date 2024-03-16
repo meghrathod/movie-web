@@ -64,6 +64,7 @@ export interface ProgressStore {
   clear(): void;
   clearUpdateQueue(): void;
   removeUpdateItem(id: string): void;
+  setItem(id: string, item: ProgressMediaItem): void;
 }
 
 let updateId = 0;
@@ -171,6 +172,11 @@ export const useProgressStore = create(
       removeUpdateItem(id: string) {
         set((s) => {
           s.updateQueue = [...s.updateQueue.filter((v) => v.id !== id)];
+        });
+      },
+      setItem(id, item) {
+        set((s) => {
+          s.items[id] = item;
         });
       },
     })),
